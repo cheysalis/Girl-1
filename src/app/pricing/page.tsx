@@ -65,7 +65,7 @@ export default function PricingPage() {
           </h1>
           <p className="text-lg text-gray-400 max-w-2xl mx-auto">
             All plans include zero nagging, zero passive-aggressive sighs, and a
-            100% satisfaction guarantee. Cancel anytime — no guilt trip included.
+            100% satisfaction guarantee. Cancel anytime, no guilt trip included.
           </p>
         </div>
       </section>

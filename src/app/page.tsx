@@ -329,7 +329,7 @@ export default function HomePage() {
             >
               Professional household services that make your life feel like you
               have it together. Cleaning, cooking, organizing, emotional
-              support — all the good stuff, zero arguments about the thermostat.
+              support, all the good stuff, zero arguments about the thermostat.
             </p>
 
             <div

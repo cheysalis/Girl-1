@@ -77,7 +77,7 @@ export default function AboutPage() {
             <p>
               It started with a visit to her brother&apos;s apartment. The sink had
               dishes from what appeared to be the Bush administration. There were
-              no towels — just a collection of oversized t-shirts draped over
+              no towels, just a collection of oversized t-shirts draped over
               the shower rod. The &quot;spice rack&quot; was a bottle of ketchup and some
               mysterious powder that may have once been oregano.
             </p>
@@ -88,7 +88,7 @@ export default function AboutPage() {
             </p>
             <p>
               That&apos;s when she realized: there are a LOT of guys out there
-              living like this. Not because they&apos;re bad people — they just
+              living like this. Not because they&apos;re bad people, they just
               never learned, don&apos;t have time, or genuinely believe Febreze
               counts as cleaning.
             </p>
@@ -133,7 +133,7 @@ export default function AboutPage() {
               {
                 icon: Sparkles,
                 title: "Actually Good at This",
-                desc: "Our team doesn't just clean — they transform spaces. It's kind of their superpower.",
+                desc: "Our team doesn't just clean, they transform spaces. It's kind of their superpower.",
               },
               {
                 icon: Users,

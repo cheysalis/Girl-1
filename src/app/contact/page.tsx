@@ -53,7 +53,7 @@ export default function ContactPage() {
                     icon: Clock,
                     label: "Service Hours",
                     value: "7 Days a Week",
-                    sub: "8am - 8pm local time",
+                    sub: "8am to 8pm local time",
                   },
                 ].map((item) => (
                   <div

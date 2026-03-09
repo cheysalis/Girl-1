@@ -20,7 +20,7 @@ const services = [
     icon: SprayCan,
     title: "Deep Clean Queen",
     tagline: "She cleans. You recline.",
-    desc: "Your place will sparkle so hard your buddies will think you hired a wizard. Bathrooms, kitchens, floors — she handles it all while you handle the remote.",
+    desc: "Your place will sparkle so hard your buddies will think you hired a wizard. Bathrooms, kitchens, floors, she handles it all while you handle the remote.",
     color: "from-pink-500/20 to-pink-600/10",
   },
   {
@@ -76,7 +76,7 @@ const services = [
     icon: Calendar,
     title: "Life Admin",
     tagline: "She remembers so you don't have to.",
-    desc: "Appointments booked, bills reminded, that thing you were supposed to do last Tuesday — handled. She's basically a human calendar with better hair.",
+    desc: "Appointments booked, bills reminded, that thing you were supposed to do last Tuesday? Handled. She's basically a human calendar with better hair.",
     color: "from-violet-500/20 to-violet-600/10",
   },
   {
@@ -115,7 +115,7 @@ export default function ServicesPage() {
           </h1>
           <p className="text-lg text-gray-400 max-w-2xl mx-auto">
             Every service you didn&apos;t know you desperately needed. Pick one,
-            pick all — we don&apos;t judge. (Unlike your mother.)
+            pick all, we don&apos;t judge. (Unlike your mother.)
           </p>
         </div>
       </section>
