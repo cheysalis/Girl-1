@@ -7,12 +7,6 @@ import {
   FolderOpen,
   ShoppingCart,
   Heart,
-  Cookie,
-  Dog,
-  Calendar,
-  Gift,
-  Lightbulb,
-  Music,
   ArrowRight,
   Star,
   CheckCircle,
@@ -22,6 +16,7 @@ import {
   Phone,
 } from "lucide-react";
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 const highlights = [
@@ -138,10 +133,12 @@ export default function HomePage() {
       {/* HERO */}
       <section className="relative min-h-[90vh] flex items-center overflow-hidden">
         {/* Banner image */}
-        <img
+        <Image
           src="https://images.pexels.com/photos/6195198/pexels-photo-6195198.jpeg?auto=compress&cs=tinysrgb&w=1920"
           alt="Woman cleaning"
-          className="absolute inset-0 w-full h-full object-cover opacity-50"
+          fill
+          className="object-cover opacity-50"
+          priority
         />
         <div className="absolute inset-0 bg-gradient-to-br from-pink-950/40 via-black/60 to-black/80" />
         <div className="absolute top-20 -right-40 w-[600px] h-[600px] bg-pink-500/10 rounded-full blur-3xl animate-float" />
