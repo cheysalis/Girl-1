@@ -22,10 +22,24 @@ export default function AboutPage() {
   return (
     <>
       {/* HERO */}
-      <section className="relative py-28 sm:py-36 overflow-hidden">
-        {/* Dark gradient base */}
-        <div className="absolute inset-0 bg-gradient-to-br from-pink-950/40 via-black/90 to-black" />
+      <section className="relative py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-pink-950/30 via-black to-black" />
+        <div className="absolute top-10 -right-40 w-[500px] h-[500px] bg-pink-500/10 rounded-full blur-3xl" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-pink-500/30 bg-pink-500/10 text-pink-400 text-sm mb-6">
+            <span className="text-lg">🫣</span> A true story. Unfortunately.
+          </div>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
+            The <span className="girl1-gradient-text">Origin Story</span>
+          </h1>
+          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+            How one woman&apos;s trip to her brother&apos;s apartment changed everything.
+          </p>
+        </div>
+      </section>
 
+      {/* STORY */}
+      <section className="py-20 relative overflow-hidden">
         {/* Animated blobs */}
         <div className="absolute top-10 -right-40 w-[500px] h-[500px] bg-pink-500/10 rounded-full blur-3xl animate-float" />
         <div className="absolute bottom-10 -left-40 w-[400px] h-[400px] bg-purple-500/8 rounded-full blur-3xl animate-float-delayed" />
@@ -47,34 +61,18 @@ export default function AboutPage() {
 
         {/* Funny background text watermarks */}
         <div className="absolute inset-0 overflow-hidden opacity-[0.03] pointer-events-none select-none">
-          <div className="absolute top-[10%] -left-10 text-[120px] font-black text-white rotate-[-12deg] whitespace-nowrap">
+          <div className="absolute top-[5%] -left-10 text-[120px] font-black text-white rotate-[-12deg] whitespace-nowrap">
             HELP ME
           </div>
           <div className="absolute top-[40%] -right-10 text-[100px] font-black text-white rotate-[8deg] whitespace-nowrap">
             SEND GIRL#1
           </div>
-          <div className="absolute top-[70%] left-[5%] text-[90px] font-black text-white rotate-[-5deg] whitespace-nowrap">
+          <div className="absolute top-[75%] left-[5%] text-[90px] font-black text-white rotate-[-5deg] whitespace-nowrap">
             IS THAT MOLD?
           </div>
         </div>
 
-        {/* Content */}
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-pink-500/30 bg-pink-500/10 text-pink-400 text-sm mb-6">
-            <span className="text-lg">🫣</span> A true story. Unfortunately.
-          </div>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
-            The <span className="girl1-gradient-text">Origin Story</span>
-          </h1>
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-            How one woman&apos;s trip to her brother&apos;s apartment changed everything.
-          </p>
-        </div>
-      </section>
-
-      {/* STORY */}
-      <section className="py-20">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="glass-card rounded-2xl p-8 sm:p-12 space-y-6 text-gray-300 leading-relaxed">
             <p>
               It started with a visit to her brother&apos;s apartment. The sink had
