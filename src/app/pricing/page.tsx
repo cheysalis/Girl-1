@@ -5,7 +5,7 @@ const pricingPlans = [
   {
     name: "The Starter Boyfriend",
     tagline: "Baby steps, champ",
-    price: "250",
+    price: "500",
     features: [
       "Bi-weekly deep clean",
       "Basic laundry service",
@@ -19,7 +19,7 @@ const pricingPlans = [
   {
     name: "The Whole Package",
     tagline: "Most popular. Obviously.",
-    price: "499",
+    price: "1,000",
     features: [
       "Weekly deep clean",
       "Full laundry service",
@@ -36,7 +36,7 @@ const pricingPlans = [
   {
     name: "The Trophy Life",
     tagline: "For the man who has everything except his life together",
-    price: "899",
+    price: "2,000",
     features: [
       "Everything in Whole Package",
       "Daily cleaning visits",
