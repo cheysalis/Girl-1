@@ -52,7 +52,7 @@ const highlights = [
   },
   {
     icon: Heart,
-    title: "Emotional Support Human",
+    title: "Emotional Support",
     desc: "She listens and says 'that sucks' at all the right moments.",
   },
 ];
@@ -137,7 +137,13 @@ export default function HomePage() {
     <>
       {/* HERO */}
       <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-pink-950/40 via-black to-black" />
+        {/* Banner image */}
+        <img
+          src="https://images.pexels.com/photos/6195198/pexels-photo-6195198.jpeg?auto=compress&cs=tinysrgb&w=1920"
+          alt="Woman cleaning"
+          className="absolute inset-0 w-full h-full object-cover opacity-50"
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-pink-950/40 via-black/60 to-black/80" />
         <div className="absolute top-20 -right-40 w-[600px] h-[600px] bg-pink-500/10 rounded-full blur-3xl animate-float" />
         <div className="absolute bottom-20 -left-40 w-[500px] h-[500px] bg-purple-500/8 rounded-full blur-3xl animate-float-delayed" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-pink-600/5 rounded-full blur-3xl animate-pulse-slow" />

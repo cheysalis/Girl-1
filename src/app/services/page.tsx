@@ -53,7 +53,7 @@ const services = [
   },
   {
     icon: Heart,
-    title: "Emotional Support Human",
+    title: "Emotional Support",
     tagline: "She listens. No, really.",
     desc: "Bad day? She'll listen and say 'that sucks' at all the right moments. She'll validate your feelings without bringing up that thing you did in 2019.",
     color: "from-red-500/20 to-red-600/10",
