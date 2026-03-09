@@ -164,7 +164,7 @@ export default function HomePage() {
               </span>
               <br />
               <span className="girl1-gradient-text text-4xl sm:text-5xl lg:text-6xl">
-                Without the WiFi Password.
+                Without the Baggage.
               </span>
             </h1>
 
