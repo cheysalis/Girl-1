@@ -373,57 +373,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <RevealSection className="text-center mb-14">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4 glitch-hover">
-              How It Works
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              So simple even you can figure it out. Three steps. No assembly
-              required.
-            </p>
-          </RevealSection>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                step: "01",
-                emoji: "📱",
-                title: "Book Online",
-                desc: "Pick your services like you're building a fantasy team. Except this one actually helps you win at life.",
-              },
-              {
-                step: "02",
-                emoji: "🦸‍♀️",
-                title: "Girl#1 Arrives",
-                desc: "A vetted professional shows up with supplies, skills, and zero judgment about your current situation.",
-              },
-              {
-                step: "03",
-                emoji: "👑",
-                title: "Live Like Royalty",
-                desc: "Your place is clean, your fridge is full, and you look like a functioning adult. Incredible.",
-              },
-            ].map((item, i) => (
-              <RevealSection key={item.step} variant="scale" delay={i * 0.15}>
-                <div className="glass-card gradient-border rounded-2xl p-8 hover:border-pink-500/30 transition-all hover:-translate-y-2 text-center group relative overflow-hidden">
-                  <div className="text-5xl mb-4 group-hover:animate-wiggle">
-                    {item.emoji}
-                  </div>
-                  <div className="text-sm font-mono text-pink-500/60 mb-2">
-                    STEP {item.step}
-                  </div>
-                  <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-                  <p className="text-gray-400">{item.desc}</p>
-                </div>
-              </RevealSection>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* SERVICE HIGHLIGHTS */}
       <section
         id="services"
@@ -541,6 +490,57 @@ export default function HomePage() {
             * Results may vary. Girl#1 is not responsible for existential
             realizations.
           </p>
+        </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <RevealSection className="text-center mb-14">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 glitch-hover">
+              How It Works
+            </h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">
+              So simple even you can figure it out. Three steps. No assembly
+              required.
+            </p>
+          </RevealSection>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                step: "01",
+                emoji: "📱",
+                title: "Book Online",
+                desc: "Pick your services like you're building a fantasy team. Except this one actually helps you win at life.",
+              },
+              {
+                step: "02",
+                emoji: "🦸‍♀️",
+                title: "Girl#1 Arrives",
+                desc: "A vetted professional shows up with supplies, skills, and zero judgment about your current situation.",
+              },
+              {
+                step: "03",
+                emoji: "👑",
+                title: "Live Like Royalty",
+                desc: "Your place is clean, your fridge is full, and you look like a functioning adult. Incredible.",
+              },
+            ].map((item, i) => (
+              <RevealSection key={item.step} variant="scale" delay={i * 0.15}>
+                <div className="glass-card gradient-border rounded-2xl p-8 hover:border-pink-500/30 transition-all hover:-translate-y-2 text-center group relative overflow-hidden">
+                  <div className="text-5xl mb-4 group-hover:animate-wiggle">
+                    {item.emoji}
+                  </div>
+                  <div className="text-sm font-mono text-pink-500/60 mb-2">
+                    STEP {item.step}
+                  </div>
+                  <h3 className="text-xl font-bold mb-3">{item.title}</h3>
+                  <p className="text-gray-400">{item.desc}</p>
+                </div>
+              </RevealSection>
+            ))}
+          </div>
         </div>
       </section>
 
