@@ -1,14 +1,68 @@
 import { Shield, Heart, Sparkles, Users } from "lucide-react";
 import Link from "next/link";
 
+const floatingEmojis = [
+  { emoji: "🧹", top: "8%", left: "5%", size: "text-5xl", delay: "0s", duration: "6s" },
+  { emoji: "🧽", top: "15%", left: "85%", size: "text-4xl", delay: "1s", duration: "7s" },
+  { emoji: "🍕", top: "70%", left: "10%", size: "text-5xl", delay: "0.5s", duration: "8s" },
+  { emoji: "🧦", top: "25%", left: "75%", size: "text-6xl", delay: "2s", duration: "5s" },
+  { emoji: "😱", top: "60%", left: "80%", size: "text-4xl", delay: "1.5s", duration: "7s" },
+  { emoji: "🪣", top: "75%", left: "90%", size: "text-5xl", delay: "0s", duration: "6s" },
+  { emoji: "💀", top: "80%", left: "25%", size: "text-4xl", delay: "3s", duration: "8s" },
+  { emoji: "🛋️", top: "10%", left: "40%", size: "text-3xl", delay: "2.5s", duration: "9s" },
+  { emoji: "🧴", top: "50%", left: "3%", size: "text-4xl", delay: "1s", duration: "6s" },
+  { emoji: "👕", top: "35%", left: "92%", size: "text-5xl", delay: "0.5s", duration: "7s" },
+  { emoji: "🍺", top: "45%", left: "15%", size: "text-4xl", delay: "2s", duration: "5s" },
+  { emoji: "😤", top: "20%", left: "25%", size: "text-3xl", delay: "1.5s", duration: "8s" },
+  { emoji: "✨", top: "65%", left: "60%", size: "text-5xl", delay: "0s", duration: "6s" },
+  { emoji: "🪥", top: "40%", left: "50%", size: "text-3xl", delay: "3s", duration: "7s" },
+];
+
 export default function AboutPage() {
   return (
     <>
       {/* HERO */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-pink-950/30 via-black to-black" />
-        <div className="absolute top-10 -right-40 w-[500px] h-[500px] bg-pink-500/10 rounded-full blur-3xl" />
+      <section className="relative py-28 sm:py-36 overflow-hidden">
+        {/* Dark gradient base */}
+        <div className="absolute inset-0 bg-gradient-to-br from-pink-950/40 via-black/90 to-black" />
+
+        {/* Animated blobs */}
+        <div className="absolute top-10 -right-40 w-[500px] h-[500px] bg-pink-500/10 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-10 -left-40 w-[400px] h-[400px] bg-purple-500/8 rounded-full blur-3xl animate-float-delayed" />
+
+        {/* Floating funny emojis */}
+        {floatingEmojis.map((item, i) => (
+          <div
+            key={i}
+            className={`absolute ${item.size} opacity-20 hover:opacity-60 transition-opacity duration-300 pointer-events-none select-none`}
+            style={{
+              top: item.top,
+              left: item.left,
+              animation: `float ${item.duration} ease-in-out ${item.delay} infinite`,
+            }}
+          >
+            {item.emoji}
+          </div>
+        ))}
+
+        {/* Funny background text watermarks */}
+        <div className="absolute inset-0 overflow-hidden opacity-[0.03] pointer-events-none select-none">
+          <div className="absolute top-[10%] -left-10 text-[120px] font-black text-white rotate-[-12deg] whitespace-nowrap">
+            HELP ME
+          </div>
+          <div className="absolute top-[40%] -right-10 text-[100px] font-black text-white rotate-[8deg] whitespace-nowrap">
+            SEND GIRL#1
+          </div>
+          <div className="absolute top-[70%] left-[5%] text-[90px] font-black text-white rotate-[-5deg] whitespace-nowrap">
+            IS THAT MOLD?
+          </div>
+        </div>
+
+        {/* Content */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-pink-500/30 bg-pink-500/10 text-pink-400 text-sm mb-6">
+            <span className="text-lg">🫣</span> A true story. Unfortunately.
+          </div>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">
             The <span className="girl1-gradient-text">Origin Story</span>
           </h1>
