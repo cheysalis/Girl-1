@@ -137,7 +137,7 @@ export default function HomePage() {
           src="https://images.pexels.com/photos/6195198/pexels-photo-6195198.jpeg?auto=compress&cs=tinysrgb&w=1920"
           alt="Woman cleaning"
           fill
-          className="object-cover opacity-50"
+          className="object-cover opacity-75"
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-br from-pink-950/40 via-black/60 to-black/80" />
