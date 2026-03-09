@@ -15,9 +15,11 @@ import {
   Sparkles,
   Phone,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
+
+/* ─── Data ─── */
 
 const highlights = [
   {
@@ -125,19 +127,172 @@ const faqs = [
   },
 ];
 
+/* ─── Scroll-reveal hook ─── */
+
+function useReveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add("visible");
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return ref;
+}
+
+/* ─── Animated counter ─── */
+
+function AnimatedStat({ value, label }: { value: string; label: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [display, setDisplay] = useState(value);
+  const hasAnimated = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated.current) {
+          hasAnimated.current = true;
+          const numericMatch = value.match(/^([\d,]+)/);
+          if (numericMatch) {
+            const target = parseInt(numericMatch[1].replace(/,/g, ""), 10);
+            const suffix = value.replace(numericMatch[1], "");
+            const duration = 1500;
+            const steps = 40;
+            const increment = target / steps;
+            let current = 0;
+            let step = 0;
+            const timer = setInterval(() => {
+              step++;
+              current = Math.min(Math.round(increment * step), target);
+              setDisplay(current.toLocaleString() + suffix);
+              if (step >= steps) clearInterval(timer);
+            }, duration / steps);
+          }
+          observer.unobserve(el);
+        }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [value]);
+
+  return (
+    <div ref={ref} className="text-center">
+      <div className="text-3xl font-bold text-pink-500 stat-number">{display}</div>
+      <div className="text-sm text-gray-400 mt-1">{label}</div>
+    </div>
+  );
+}
+
+/* ─── Floating particles ─── */
+
+function Particles() {
+  return (
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+      {Array.from({ length: 20 }).map((_, i) => (
+        <div
+          key={i}
+          className="particle"
+          style={{
+            left: `${Math.random() * 100}%`,
+            animationDuration: `${8 + Math.random() * 12}s`,
+            animationDelay: `${Math.random() * 10}s`,
+            animation: `particle-drift ${8 + Math.random() * 12}s linear ${Math.random() * 10}s infinite`,
+            opacity: 0.15 + Math.random() * 0.25,
+            width: `${1 + Math.random() * 2}px`,
+            height: `${1 + Math.random() * 2}px`,
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+/* ─── Reveal wrapper for sections ─── */
+
+function RevealSection({
+  children,
+  className = "",
+  variant = "up",
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  variant?: "up" | "left" | "right" | "scale";
+  delay?: number;
+}) {
+  const revealClass =
+    variant === "left"
+      ? "reveal-left"
+      : variant === "right"
+        ? "reveal-right"
+        : variant === "scale"
+          ? "reveal-scale"
+          : "reveal";
+
+  const ref = useReveal<HTMLDivElement>();
+
+  return (
+    <div
+      ref={ref}
+      className={`${revealClass} ${className}`}
+      style={{ transitionDelay: `${delay}s` }}
+    >
+      {children}
+    </div>
+  );
+}
+
+/* ─── Main Page ─── */
+
 export default function HomePage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    setMousePos({ x: e.clientX, y: e.clientY });
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [handleMouseMove]);
 
   return (
     <>
+      <Particles />
+
+      {/* Cursor follow glow */}
+      <div
+        className="fixed pointer-events-none z-10 w-[300px] h-[300px] rounded-full blur-3xl opacity-[0.04] bg-pink-500 transition-transform duration-700 ease-out"
+        style={{
+          left: mousePos.x - 150,
+          top: mousePos.y - 150,
+        }}
+      />
+
       {/* HERO */}
       <section className="relative min-h-[90vh] flex items-center overflow-hidden">
-        {/* Banner image */}
+        {/* Banner image with Ken Burns */}
         <Image
           src="/hero.jpg"
           alt="Woman cleaning"
           fill
-          className="object-cover opacity-75"
+          className="object-cover opacity-75 ken-burns"
           priority
         />
         <div className="absolute inset-0 bg-gradient-to-br from-pink-950/40 via-black/60 to-black/80" />
@@ -159,7 +314,7 @@ export default function HomePage() {
               Girl
               <span className="text-pink-500">#1</span>
               <br />
-              <span className="text-3xl sm:text-4xl lg:text-5xl text-gray-300">
+              <span className="text-4xl sm:text-5xl lg:text-6xl text-gray-300">
                 The Wife Experience
               </span>
               <br />
@@ -196,11 +351,15 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+
+        {/* Scanning line at bottom of hero */}
+        <div className="absolute bottom-0 left-0 right-0 h-px scan-line" />
       </section>
 
       {/* STATS BANNER */}
-      <section className="border-y border-white/5 bg-black/40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <section className="border-y border-white/5 bg-black/40 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-pink-500/5 via-transparent to-purple-500/5" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
               { value: "2,500+", label: "Homes Rescued" },
@@ -208,12 +367,7 @@ export default function HomePage() {
               { value: "4.9", label: "Avg Rating" },
               { value: "100%", label: "Sock Match Rate" },
             ].map((s) => (
-              <div key={s.label} className="text-center">
-                <div className="text-3xl font-bold text-pink-500">
-                  {s.value}
-                </div>
-                <div className="text-sm text-gray-400 mt-1">{s.label}</div>
-              </div>
+              <AnimatedStat key={s.label} value={s.value} label={s.label} />
             ))}
           </div>
         </div>
@@ -222,15 +376,15 @@ export default function HomePage() {
       {/* HOW IT WORKS */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+          <RevealSection className="text-center mb-14">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 glitch-hover">
               How It Works
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
               So simple even you can figure it out. Three steps. No assembly
               required.
             </p>
-          </div>
+          </RevealSection>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
@@ -252,20 +406,19 @@ export default function HomePage() {
                 title: "Live Like Royalty",
                 desc: "Your place is clean, your fridge is full, and you look like a functioning adult. Incredible.",
               },
-            ].map((item) => (
-              <div
-                key={item.step}
-                className="glass-card rounded-2xl p-8 hover:border-pink-500/30 transition-all hover:-translate-y-1 text-center group"
-              >
-                <div className="text-5xl mb-4 group-hover:animate-wiggle">
-                  {item.emoji}
+            ].map((item, i) => (
+              <RevealSection key={item.step} variant="scale" delay={i * 0.15}>
+                <div className="glass-card gradient-border rounded-2xl p-8 hover:border-pink-500/30 transition-all hover:-translate-y-2 text-center group relative overflow-hidden">
+                  <div className="text-5xl mb-4 group-hover:animate-wiggle">
+                    {item.emoji}
+                  </div>
+                  <div className="text-sm font-mono text-pink-500/60 mb-2">
+                    STEP {item.step}
+                  </div>
+                  <h3 className="text-xl font-bold mb-3">{item.title}</h3>
+                  <p className="text-gray-400">{item.desc}</p>
                 </div>
-                <div className="text-sm font-mono text-pink-500/60 mb-2">
-                  STEP {item.step}
-                </div>
-                <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-                <p className="text-gray-400">{item.desc}</p>
-              </div>
+              </RevealSection>
             ))}
           </div>
         </div>
@@ -277,113 +430,113 @@ export default function HomePage() {
         className="py-20 bg-gradient-to-b from-transparent via-pink-950/10 to-transparent"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+          <RevealSection className="text-center mb-14">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 glitch-hover">
               The Menu of Miracles
             </h2>
             <p className="text-gray-400 max-w-2xl mx-auto">
               Every service you didn&apos;t know you desperately needed.
             </p>
-          </div>
+          </RevealSection>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {highlights.map((h, i) => (
-              <div
-                key={h.title}
-                className="glass-card rounded-2xl p-6 hover:border-pink-500/30 transition-all group hover:-translate-y-1 animate-fade-in-up"
-                style={{ animationDelay: `${i * 0.1}s` }}
-              >
-                <div className="w-14 h-14 rounded-2xl bg-pink-500/10 flex items-center justify-center mb-4 group-hover:bg-pink-500/20 group-hover:scale-110 transition-all">
-                  <h.icon className="w-7 h-7 text-pink-400" />
+              <RevealSection key={h.title} delay={i * 0.1}>
+                <div className="glass-card gradient-border rounded-2xl p-6 hover:border-pink-500/30 transition-all group hover:-translate-y-2 relative overflow-hidden">
+                  <div className="w-14 h-14 rounded-2xl bg-pink-500/10 flex items-center justify-center mb-4 group-hover:bg-pink-500/20 group-hover:scale-110 transition-all">
+                    <h.icon className="w-7 h-7 text-pink-400" />
+                  </div>
+                  <h3 className="text-lg font-bold mb-2">{h.title}</h3>
+                  <p className="text-sm text-gray-400">{h.desc}</p>
                 </div>
-                <h3 className="text-lg font-bold mb-2">{h.title}</h3>
-                <p className="text-sm text-gray-400">{h.desc}</p>
-              </div>
+              </RevealSection>
             ))}
           </div>
 
-          <div className="text-center mt-10">
+          <RevealSection className="text-center mt-10">
             <Link
               href="/services"
               className="inline-flex items-center gap-2 text-pink-400 hover:text-pink-300 font-medium transition-colors"
             >
               View All 12 Services <ArrowRight className="w-4 h-4" />
             </Link>
-          </div>
+          </RevealSection>
         </div>
       </section>
 
       {/* COMPARISON TABLE */}
       <section className="py-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+          <RevealSection className="text-center mb-14">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 glitch-hover">
               The Honest Comparison
             </h2>
             <p className="text-gray-400">
               Let&apos;s lay it all out. No hard feelings.
             </p>
-          </div>
+          </RevealSection>
 
-          <div className="glass-card rounded-2xl overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-white/10">
-                    <th className="text-left p-4 text-gray-400 font-medium">
-                      Feature
-                    </th>
-                    <th className="p-4 text-center">
-                      <span className="text-pink-400 font-bold">Girl#1</span>
-                    </th>
-                    <th className="p-4 text-center">
-                      <span className="text-gray-300 font-bold">
-                        Actual Wife
-                      </span>
-                    </th>
-                    <th className="p-4 text-center">
-                      <span className="text-gray-500 font-bold">
-                        You, Alone
-                      </span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {comparisonItems.map((item, i) => (
-                    <tr
-                      key={item.feature}
-                      className={`border-b border-white/5 ${i % 2 === 0 ? "bg-white/[0.02]" : ""}`}
-                    >
-                      <td className="p-4 text-sm text-gray-300">
-                        {item.feature}
-                      </td>
-                      <td className="p-4 text-center">
-                        {item.girl1 ? (
-                          <CheckCircle className="w-5 h-5 text-green-400 mx-auto" />
-                        ) : (
-                          <XCircle className="w-5 h-5 text-gray-600 mx-auto" />
-                        )}
-                      </td>
-                      <td className="p-4 text-center">
-                        {item.wife ? (
-                          <CheckCircle className="w-5 h-5 text-yellow-400 mx-auto" />
-                        ) : (
-                          <XCircle className="w-5 h-5 text-gray-600 mx-auto" />
-                        )}
-                      </td>
-                      <td className="p-4 text-center">
-                        {item.you ? (
-                          <CheckCircle className="w-5 h-5 text-blue-400 mx-auto" />
-                        ) : (
-                          <XCircle className="w-5 h-5 text-gray-600 mx-auto" />
-                        )}
-                      </td>
+          <RevealSection variant="scale">
+            <div className="glass-card rounded-2xl overflow-hidden relative scan-line">
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-white/10">
+                      <th className="text-left p-4 text-gray-400 font-medium">
+                        Feature
+                      </th>
+                      <th className="p-4 text-center">
+                        <span className="text-pink-400 font-bold">Girl#1</span>
+                      </th>
+                      <th className="p-4 text-center">
+                        <span className="text-gray-300 font-bold">
+                          Actual Wife
+                        </span>
+                      </th>
+                      <th className="p-4 text-center">
+                        <span className="text-gray-500 font-bold">
+                          You, Alone
+                        </span>
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {comparisonItems.map((item, i) => (
+                      <tr
+                        key={item.feature}
+                        className={`border-b border-white/5 transition-colors hover:bg-pink-500/5 ${i % 2 === 0 ? "bg-white/[0.02]" : ""}`}
+                      >
+                        <td className="p-4 text-sm text-gray-300">
+                          {item.feature}
+                        </td>
+                        <td className="p-4 text-center">
+                          {item.girl1 ? (
+                            <CheckCircle className="w-5 h-5 text-green-400 mx-auto" />
+                          ) : (
+                            <XCircle className="w-5 h-5 text-gray-600 mx-auto" />
+                          )}
+                        </td>
+                        <td className="p-4 text-center">
+                          {item.wife ? (
+                            <CheckCircle className="w-5 h-5 text-yellow-400 mx-auto" />
+                          ) : (
+                            <XCircle className="w-5 h-5 text-gray-600 mx-auto" />
+                          )}
+                        </td>
+                        <td className="p-4 text-center">
+                          {item.you ? (
+                            <CheckCircle className="w-5 h-5 text-blue-400 mx-auto" />
+                          ) : (
+                            <XCircle className="w-5 h-5 text-gray-600 mx-auto" />
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
+          </RevealSection>
           <p className="text-center text-xs text-gray-600 mt-4">
             * Results may vary. Girl#1 is not responsible for existential
             realizations.
@@ -394,34 +547,37 @@ export default function HomePage() {
       {/* TESTIMONIALS */}
       <section className="py-20 bg-gradient-to-b from-transparent via-pink-950/10 to-transparent">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+          <RevealSection className="text-center mb-14">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 glitch-hover">
               Real Men. Real Clean Houses.
             </h2>
             <p className="text-gray-400">
               Actual testimonials from guys who can now find their keys.
             </p>
-          </div>
+          </RevealSection>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {testimonials.map((t) => (
-              <div
+            {testimonials.map((t, i) => (
+              <RevealSection
                 key={t.name}
-                className="glass-card rounded-2xl p-6 hover:border-pink-500/30 transition-all hover:-translate-y-1"
+                variant={i % 3 === 0 ? "left" : i % 3 === 1 ? "up" : "right"}
+                delay={i * 0.1}
               >
-                <div className="flex gap-1 mb-3">
-                  {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star
-                      key={i}
-                      className="w-4 h-4 text-pink-500 fill-pink-500"
-                    />
-                  ))}
+                <div className="glass-card gradient-border rounded-2xl p-6 hover:border-pink-500/30 transition-all hover:-translate-y-2">
+                  <div className="flex gap-1 mb-3">
+                    {Array.from({ length: t.rating }).map((_, j) => (
+                      <Star
+                        key={j}
+                        className="w-4 h-4 text-pink-500 fill-pink-500"
+                      />
+                    ))}
+                  </div>
+                  <p className="text-gray-300 mb-4 text-sm leading-relaxed">
+                    &quot;{t.text}&quot;
+                  </p>
+                  <div className="text-sm font-semibold text-white">{t.name}</div>
                 </div>
-                <p className="text-gray-300 mb-4 text-sm leading-relaxed">
-                  &quot;{t.text}&quot;
-                </p>
-                <div className="text-sm font-semibold text-white">{t.name}</div>
-              </div>
+              </RevealSection>
             ))}
           </div>
         </div>
@@ -430,35 +586,41 @@ export default function HomePage() {
       {/* FAQ */}
       <section className="py-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+          <RevealSection className="text-center mb-14">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4 glitch-hover">
               Questions You&apos;re Too Proud to Ask
             </h2>
             <p className="text-gray-400">
               Don&apos;t worry, we get these a lot.
             </p>
-          </div>
+          </RevealSection>
 
           <div className="space-y-3">
             {faqs.map((faq, i) => (
-              <div key={i} className="glass-card rounded-xl overflow-hidden">
-                <button
-                  className="w-full text-left px-6 py-4 flex items-center justify-between hover:bg-white/5 transition-colors"
-                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                >
-                  <span className="font-semibold text-gray-200">{faq.q}</span>
-                  <span
-                    className={`text-pink-400 text-xl transition-transform ${openFaq === i ? "rotate-45" : ""}`}
+              <RevealSection key={i} delay={i * 0.08}>
+                <div className="glass-card rounded-xl overflow-hidden">
+                  <button
+                    className="w-full text-left px-6 py-4 flex items-center justify-between hover:bg-white/5 transition-colors"
+                    onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   >
-                    +
-                  </span>
-                </button>
-                {openFaq === i && (
-                  <div className="px-6 pb-4 text-sm text-gray-400 animate-fade-in">
-                    {faq.a}
+                    <span className="font-semibold text-gray-200">{faq.q}</span>
+                    <span
+                      className={`text-pink-400 text-xl transition-transform duration-300 ${openFaq === i ? "rotate-45" : ""}`}
+                    >
+                      +
+                    </span>
+                  </button>
+                  <div
+                    className={`overflow-hidden transition-all duration-500 ease-in-out ${
+                      openFaq === i ? "max-h-40 opacity-100" : "max-h-0 opacity-0"
+                    }`}
+                  >
+                    <div className="px-6 pb-4 text-sm text-gray-400">
+                      {faq.a}
+                    </div>
                   </div>
-                )}
-              </div>
+                </div>
+              </RevealSection>
             ))}
           </div>
         </div>
@@ -467,38 +629,59 @@ export default function HomePage() {
       {/* CTA */}
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="glass-card rounded-3xl p-10 sm:p-16 text-center relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-80 h-80 bg-pink-600/10 rounded-full blur-3xl animate-float" />
-            <div className="absolute bottom-0 left-0 w-60 h-60 bg-purple-500/8 rounded-full blur-3xl animate-float-delayed" />
-            <div className="relative">
-              <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-                Ready to Live Your Best Life?
-              </h2>
-              <p className="text-gray-400 max-w-xl mx-auto mb-8">
-                Your future self (the one with matching socks and a stocked
-                fridge) is waiting. Don&apos;t let him down.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <Link
-                  href="/book"
-                  className="inline-flex items-center gap-2 px-8 py-3.5 bg-pink-600 hover:bg-pink-500 text-white font-semibold rounded-xl transition-all hover:scale-105 hover:shadow-lg hover:shadow-pink-500/20"
-                >
-                  Get Started <ArrowRight className="w-4 h-4" />
-                </Link>
-                <a
-                  href="tel:5554201111"
-                  className="inline-flex items-center gap-2 px-8 py-3.5 border border-white/10 hover:border-pink-500/40 text-white font-semibold rounded-xl transition-all hover:bg-white/5"
-                >
-                  <Phone className="w-4 h-4" /> (555) 420-GIRL
-                </a>
+          <RevealSection variant="scale">
+            <div className="glass-card rounded-3xl p-10 sm:p-16 text-center relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-80 h-80 bg-pink-600/10 rounded-full blur-3xl animate-float" />
+              <div className="absolute bottom-0 left-0 w-60 h-60 bg-purple-500/8 rounded-full blur-3xl animate-float-delayed" />
+
+              {/* Animated border on CTA */}
+              <div className="absolute inset-0 rounded-3xl overflow-hidden">
+                <div
+                  className="absolute inset-[-1px] rounded-3xl"
+                  style={{
+                    background: "linear-gradient(270deg, #ec4899, #a855f7, #3b82f6, #ec4899)",
+                    backgroundSize: "300% 300%",
+                    animation: "border-flow 4s ease infinite",
+                    mask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                    WebkitMaskComposite: "xor",
+                    maskComposite: "exclude",
+                    padding: "1px",
+                    opacity: 0.5,
+                  }}
+                />
               </div>
-              <p className="text-xs text-gray-600 mt-6">
-                * Girl#1 services do not include relationship advice, couples
-                therapy, or telling you what you did wrong. That&apos;s a
-                separate business.
-              </p>
+
+              <div className="relative">
+                <h2 className="text-3xl sm:text-4xl font-bold mb-4">
+                  Ready to Live Your Best Life?
+                </h2>
+                <p className="text-gray-400 max-w-xl mx-auto mb-8">
+                  Your future self (the one with matching socks and a stocked
+                  fridge) is waiting. Don&apos;t let him down.
+                </p>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <Link
+                    href="/book"
+                    className="inline-flex items-center gap-2 px-8 py-3.5 bg-pink-600 hover:bg-pink-500 text-white font-semibold rounded-xl transition-all hover:scale-105 hover:shadow-lg hover:shadow-pink-500/20"
+                  >
+                    Get Started <ArrowRight className="w-4 h-4" />
+                  </Link>
+                  <a
+                    href="tel:5554201111"
+                    className="inline-flex items-center gap-2 px-8 py-3.5 border border-white/10 hover:border-pink-500/40 text-white font-semibold rounded-xl transition-all hover:bg-white/5"
+                  >
+                    <Phone className="w-4 h-4" /> (555) 420-GIRL
+                  </a>
+                </div>
+                <p className="text-xs text-gray-600 mt-6">
+                  * Girl#1 services do not include relationship advice, couples
+                  therapy, or telling you what you did wrong. That&apos;s a
+                  separate business.
+                </p>
+              </div>
             </div>
-          </div>
+          </RevealSection>
         </div>
       </section>
     </>

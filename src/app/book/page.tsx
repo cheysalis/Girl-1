@@ -4,9 +4,9 @@ import { CheckCircle, Crown, ArrowRight } from "lucide-react";
 import { useState } from "react";
 
 const plans = [
-  { id: "starter", name: "The Starter Boyfriend", price: "$99/mo" },
-  { id: "whole", name: "The Whole Package", price: "$249/mo" },
-  { id: "trophy", name: "The Trophy Life", price: "$499/mo" },
+  { id: "starter", name: "The Starter Boyfriend", price: "$250/mo" },
+  { id: "whole", name: "The Whole Package", price: "$499/mo" },
+  { id: "trophy", name: "The Trophy Life", price: "$899/mo" },
 ];
 
 const addOns = [
