@@ -109,6 +109,9 @@ export default function ContactPage() {
                       <input
                         type="text"
                         required
+                        maxLength={50}
+                        pattern="[A-Za-z\s\-']+"
+                        title="Letters, spaces, hyphens, and apostrophes only"
                         placeholder="Your name"
                         className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-pink-500/50 focus:outline-none transition-colors"
                       />
@@ -120,6 +123,7 @@ export default function ContactPage() {
                       <input
                         type="email"
                         required
+                        maxLength={100}
                         placeholder="you@email.com"
                         className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-pink-500/50 focus:outline-none transition-colors"
                       />
@@ -157,6 +161,7 @@ export default function ContactPage() {
                     <textarea
                       rows={5}
                       required
+                      maxLength={1000}
                       placeholder="Tell us about your situation. No judgment. We've heard it all."
                       className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-pink-500/50 focus:outline-none transition-colors resize-none"
                     />

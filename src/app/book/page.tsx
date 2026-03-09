@@ -230,6 +230,9 @@ export default function BookPage() {
                     <input
                       type="text"
                       required
+                      maxLength={50}
+                      pattern="[A-Za-z\s\-']+"
+                      title="Letters, spaces, hyphens, and apostrophes only"
                       placeholder="Your name"
                       className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-pink-500/50 focus:outline-none"
                     />
@@ -241,6 +244,9 @@ export default function BookPage() {
                     <input
                       type="text"
                       required
+                      maxLength={50}
+                      pattern="[A-Za-z\s\-']+"
+                      title="Letters, spaces, hyphens, and apostrophes only"
                       placeholder="Last name"
                       className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-pink-500/50 focus:outline-none"
                     />
@@ -253,6 +259,7 @@ export default function BookPage() {
                   <input
                     type="email"
                     required
+                    maxLength={100}
                     placeholder="you@email.com"
                     className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-pink-500/50 focus:outline-none"
                   />
@@ -264,6 +271,9 @@ export default function BookPage() {
                   <input
                     type="tel"
                     required
+                    maxLength={20}
+                    pattern="[\d\s\-\(\)\+]+"
+                    title="Valid phone number characters only"
                     placeholder="(555) 123-4567"
                     className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-pink-500/50 focus:outline-none"
                   />
@@ -275,6 +285,9 @@ export default function BookPage() {
                   <input
                     type="text"
                     required
+                    maxLength={10}
+                    pattern="[0-9\-]+"
+                    title="Numbers and dashes only"
                     placeholder="Your zip code"
                     className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-pink-500/50 focus:outline-none"
                   />
@@ -285,6 +298,7 @@ export default function BookPage() {
                   </label>
                   <textarea
                     rows={3}
+                    maxLength={500}
                     placeholder="Pets, allergies, how many pizza boxes are we looking at..."
                     className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-500 focus:border-pink-500/50 focus:outline-none resize-none"
                   />
