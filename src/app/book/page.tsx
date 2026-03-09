@@ -10,12 +10,12 @@ const plans = [
 ];
 
 const addOns = [
-  { id: "pet", label: "Pet Wrangling", price: "+$30/visit" },
-  { id: "meal", label: "Extra Meal Prep (10 meals)", price: "+$80/week" },
-  { id: "party", label: "Party Setup", price: "+$75/event" },
-  { id: "emergency", label: "Emergency Clean Priority", price: "+$25/mo" },
-  { id: "gift", label: "Gift Shopping Service", price: "+$20/gift" },
-  { id: "vibe", label: "Date Night Vibe Setup", price: "+$50/session" },
+  { id: "pet", label: "Pet Wrangling", price: "+$75/visit" },
+  { id: "meal", label: "Extra Meal Prep (10 meals)", price: "+$200/week" },
+  { id: "party", label: "Party Setup", price: "+$175/event" },
+  { id: "emergency", label: "Emergency Clean Priority", price: "+$65/mo" },
+  { id: "gift", label: "Gift Shopping Service", price: "+$50/gift" },
+  { id: "vibe", label: "Date Night Vibe Setup", price: "+$125/session" },
 ];
 
 export default function BookPage() {
