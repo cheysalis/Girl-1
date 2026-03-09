@@ -134,7 +134,7 @@ export default function HomePage() {
       <section className="relative min-h-[90vh] flex items-center overflow-hidden">
         {/* Banner image */}
         <Image
-          src="https://images.pexels.com/photos/6195198/pexels-photo-6195198.jpeg?auto=compress&cs=tinysrgb&w=1920"
+          src="/hero.jpg"
           alt="Woman cleaning"
           fill
           className="object-cover opacity-75"
